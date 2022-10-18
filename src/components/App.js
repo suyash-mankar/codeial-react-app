@@ -5,15 +5,15 @@ import { Loader } from './';
 
 function App() {
 
-  const [posts, setPosts] = useState([]); 
-  const [loading, setLoading] = useState(true); 
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
 
   useEffect(() => {
     const fetchPosts = async () => {
       const response = await getPosts();
       console.log('response', response);
-      if(response.success){
+      if (response.success) {
         setPosts(response.data.posts);
       }
       setLoading(false);
@@ -23,12 +23,12 @@ function App() {
 
   }, []);
 
-  if(loading){
+  if (loading) {
     return <Loader />
   }
   return (
     <div className="App">
-        <Home posts={posts} />
+      <Home posts={posts} />
     </div>
   );
 }
