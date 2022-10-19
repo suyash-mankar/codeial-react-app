@@ -4,6 +4,8 @@ import Comments from '../components/Comments';
 
 const Home = ({ posts }) => {
 
+    console.log(posts);
+
     return (
 
         <div className={styles.postsList}>
@@ -44,8 +46,11 @@ const Home = ({ posts }) => {
                             <input placeholder="Start typing a comment" />
                         </div>
 
-                        
-                        <Comments />
+                        <div className={styles.postCommentsList}>
+                            {post.comments.map((comment)=>(
+                                <Comments comment={comment} key={`comment-${comment._id}`}/>
+                            ))}
+                        </div>
 
 
                     </div>
