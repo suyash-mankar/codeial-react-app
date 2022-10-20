@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-
 import { getPosts } from '../api';
 import { Home, Login } from '../pages';
 import { Loader, Navbar } from './';

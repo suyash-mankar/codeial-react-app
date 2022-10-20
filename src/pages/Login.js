@@ -53,7 +53,7 @@ const Login = () => {
             </div>
 
             <div className={styles.field}>
-                <button disabled={loggingIn}>{loggingIn ? 'Loggin In ...' : 'Log In'}</button>
+                <button disabled={loggingIn}>{loggingIn ? 'Logging     In ...' : 'Log In'}</button>
             </div>
         </form>
     );
