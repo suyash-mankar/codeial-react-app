@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import { useProviderAuth } from "../hooks";
+import { useProvideAuth } from "../hooks";
 
 const initialState = {
     user: null,
@@ -12,7 +12,7 @@ export const AuthContext = createContext(initialState);
 
 export const AuthProvider = ({ children }) => {
 
-    const auth = useProviderAuth();
+    const auth = useProvideAuth();
 
     return <AuthContext.Provider value={auth}> {children} </AuthContext.Provider>
 }

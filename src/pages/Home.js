@@ -4,7 +4,7 @@ import Comments from '../components/Comments';
 
 const Home = ({ posts }) => {
 
-    console.log(posts);
+    // console.log(posts);
 
     return (
 
@@ -47,8 +47,8 @@ const Home = ({ posts }) => {
                         </div>
 
                         <div className={styles.postCommentsList}>
-                            {post.comments.map((comment)=>(
-                                <Comments comment={comment} key={`comment-${comment._id}`}/>
+                            {post.comments.map((comment) => (
+                                <Comments comment={comment} key={`comment-${comment._id}`} />
                             ))}
                         </div>
 
