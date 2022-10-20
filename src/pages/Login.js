@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import styles from '../styles/login.module.css';
+import { login } from '../api';
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loggingIn, setLoggingIn] = useState(false);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         setLoggingIn(true);
@@ -15,6 +16,18 @@ const Login = () => {
         if (!email || !password) {
             toast.error('please enter both email and password');
         }
+
+        const response = await login(email, password);
+
+        if (response.success) {
+            toast.success('Successfully Logged In');
+        }
+        else {
+            toast.error(response.message);
+        }
+
+        setLoggingIn(false);
+
     }
 
 
@@ -39,8 +52,8 @@ const Login = () => {
                 />
             </div>
 
-            <div className={styles.field} disabled={loggingIn}>
-                <button>{loggingIn ? 'Loggin In ...' : 'Log In'}</button>
+            <div className={styles.field}>
+                <button disabled={loggingIn}>{loggingIn ? 'Loggin In ...' : 'Log In'}</button>
             </div>
         </form>
     );
