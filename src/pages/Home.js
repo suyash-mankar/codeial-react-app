@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import styles from '../styles/home.module.css';
 import Comments from '../components/Comments';
 import { getPosts } from '../api';
+import { Loader } from '../components';
 
 const Home = () => {
 
@@ -25,6 +26,11 @@ const Home = () => {
         fetchPosts();
 
     }, []);
+
+
+    if (loading) {
+        return <Loader />
+    }
 
     return (
 
