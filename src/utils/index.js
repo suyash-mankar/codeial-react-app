@@ -15,7 +15,7 @@ export const getItemFromLocalStorage = (key) => {
         console.error('cannot get the value from local storage');
         return;
     }
-    localStorage.getItem(key);
+    return localStorage.getItem(key);
 }
 
 
