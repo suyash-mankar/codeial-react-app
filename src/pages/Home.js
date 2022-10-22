@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { useEffect, useState } from "react";
 import styles from '../styles/home.module.css';
 import Comments from '../components/Comments';
@@ -88,10 +87,6 @@ const Home = () => {
 
 };
 
-Home.propTypes = {
-    posts: PropTypes.array.isRequired,
-
-}
 
 export default Home;
 

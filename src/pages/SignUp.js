@@ -1,33 +1,74 @@
+import { useState } from 'react';
 import styles from '../styles/login.module.css';
+import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../hooks';
 
 
-const SignUp = () => {
+const Signup = () => {
 
 
-    const handleSubmit = async (e) => {
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [signingUp, setSigningUp] = useState('');
+    const auth = useAuth();
+    const navigate = useNavigate();
+
+
+
+    const handleFormSubmit = async (e) => {
         e.preventDefault();
 
+        setSigningUp(true);
 
-        if (!email || !password) {
-            toast.error('please enter both email and password');
+        let error = false;
+        if (!name || !email || !password || !confirmPassword) {
+            toast.error('please fill all the fields');
+            error = true;
         }
 
-        const response = await auth.login(email, password);
+        if (password !== confirmPassword) {
+            toast.error('Make sure password and confirm password matches');
+            error = true;
+        }
+
+        if (error) {
+            return setSigningUp(false);
+        }
+
+        const response = await auth.signup(name, email, password, confirmPassword);
 
         if (response.success) {
-            toast.success('Successfully Logged In');
+
+            navigate('/login');
+            setSigningUp(false);
+            return toast.success('User registered successfully, please login now');
         }
         else {
             toast.error(response.message);
         }
 
-        setLoggingIn(false);
+        setSigningUp(false);
 
     }
 
     return (
-        <form className={styles.loginForm} onSubmit={handleSubmit}>
-            <span className={styles.loginSignupHeader}> Log In </span>
+        <form className={styles.loginForm} onSubmit={handleFormSubmit}>
+            <span className={styles.loginSignupHeader}> Sign Up </span>
+
+            <div className={styles.field}>
+                <input
+                    type="text"
+                    placeholder="Name"
+                    required
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    autoComplete="new-password"
+                />
+            </div>
+
 
             <div className={styles.field}>
                 <input
@@ -35,6 +76,7 @@ const SignUp = () => {
                     placeholder="Email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    autoComplete="new-password"
                 />
             </div>
             <div className={styles.field}>
@@ -45,9 +87,17 @@ const SignUp = () => {
                     onChange={(e) => setPassword(e.target.value)}
                 />
             </div>
+            <div className={styles.field}>
+                <input
+                    type="password"
+                    placeholder="Confirm Password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                />
+            </div>
 
             <div className={styles.field}>
-                <button disabled={loggingIn}>{loggingIn ? 'Logging     In ...' : 'Log In'}</button>
+                <button disabled={signingUp}>{signingUp ? 'Signing up ...' : 'Signup'}</button>
             </div>
         </form>
     )
@@ -55,4 +105,4 @@ const SignUp = () => {
 
 }
 
-export default SignUp;
+export default Signup;

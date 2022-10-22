@@ -62,3 +62,11 @@ export const login = (email, password) => {
         body: { email, password },
     })
 }
+
+
+export const register = (name, email, password, confirmPassword) => {
+    return customFetch(API_URLS.signup(name, email, password, confirmPassword), {
+        method: 'POST',
+        body: { name, email, password, confirm_password: confirmPassword },
+    })
+}
