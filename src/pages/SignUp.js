@@ -17,7 +17,6 @@ const Signup = () => {
     const navigate = useNavigate();
 
 
-
     const handleFormSubmit = async (e) => {
         e.preventDefault();
 

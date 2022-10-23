@@ -1,19 +1,17 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { useAuth } from "../hooks";
-import { Home, Login, Signup } from '../pages';
+import { useAuth } from '../hooks';
+import { Home, Login, Settings, Signup } from '../pages';
 import { Loader, Navbar } from './';
 
-
 const Page404 = () => {
-  return <h1> 404 </h1>
-}
+  return <h1> 404 </h1>;
+};
 
 function App() {
-
   const auth = useAuth();
 
   if (auth.loading) {
-    return <Loader />
+    return <Loader />;
   }
   return (
     <div className="App">
@@ -22,7 +20,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
+          <Route path="/register" element={<Signup />} />
+          <Route path="/settings" element={<Settings />} />
 
           <Route path="*" element={<Page404 />} />
         </Routes>

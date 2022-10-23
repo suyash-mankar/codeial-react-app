@@ -19,7 +19,7 @@ const Navbar = () => {
             <div className={styles.rightNav}>
                 {auth.user && (
                     <div className={styles.user}>
-                        <Link to="/">
+                        <Link to="/settings">
                             <img
                                 src="https://cdn-icons-png.flaticon.com/512/924/924915.png"
                                 alt="user"
@@ -44,7 +44,7 @@ const Navbar = () => {
                                     <Link to="/login"> Log in </Link>
                                 </li>
                                 <li>
-                                    <Link to="/signup"> Register </Link>
+                                    <Link to="/register"> Register </Link>
                                 </li>
                             </>
                         )}
