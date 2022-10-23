@@ -2,6 +2,7 @@ import { useState } from 'react';
 import toast from 'react-hot-toast';
 import styles from '../styles/login.module.css';
 import { useAuth } from '../hooks';
+import { Navigate } from 'react-router-dom';
 
 
 const Login = () => {
@@ -31,6 +32,10 @@ const Login = () => {
 
         setLoggingIn(false);
 
+    }
+
+    if(auth.user){
+        return <Navigate to='/' />
     }
 
 

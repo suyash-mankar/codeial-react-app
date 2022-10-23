@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useAuth } from '../hooks';
 import styles from '../styles/settings.module.css';
 import toast from 'react-hot-toast';
+import { Navigate } from 'react-router-dom';
 
 const Settings = () => {
   const auth = useAuth();
@@ -56,6 +57,7 @@ const Settings = () => {
 
     setSavingForm(false);
   };
+
 
   return (
     <div className={styles.settings}>
@@ -115,7 +117,7 @@ const Settings = () => {
               onClick={updateProfile}
               disabled={savingForm}
             >
-              {savingForm ? 'Saving Profile..' : 'Save Profile'}
+              {savingForm ? 'Saving Profile...' : 'Save Profile'}
             </button>
             <button
               className={`button ${styles.editBtn}`}

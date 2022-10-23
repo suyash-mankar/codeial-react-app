@@ -38,10 +38,10 @@ export const useProvideAuth = () => {
 
     if (response.success) {
         setUser(response.data.user);
-    //  setItemInLocalStorage(
-    //    LOCALSTORAGE_TOKEN_KEY,
-    //    response.data.token ? response.data.token : null
-    //  );
+        setItemInLocalStorage(
+        LOCALSTORAGE_TOKEN_KEY,
+        response.data.token ? response.data.token : null
+        );
       return {
         success: true,
       };
