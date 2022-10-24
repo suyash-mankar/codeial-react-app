@@ -5,7 +5,7 @@ import {
   Navigate,
 } from 'react-router-dom';
 import { useAuth } from '../hooks';
-import { Home, Login, Settings, Signup } from '../pages';
+import { Home, Login, Settings, Signup, UserProfile } from '../pages';
 import { Loader, Navbar } from './';
 
 function PrivateRoute({ children }) {
@@ -36,6 +36,15 @@ function App() {
             element={
               <PrivateRoute>
                 <Settings />
+              </PrivateRoute>
+            }
+          />
+
+          <Route
+            path="/user/:userId"
+            element={
+              <PrivateRoute>
+                <UserProfile />
               </PrivateRoute>
             }
           />

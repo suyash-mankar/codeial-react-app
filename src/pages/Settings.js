@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useAuth } from '../hooks';
 import styles from '../styles/settings.module.css';
 import toast from 'react-hot-toast';
-import { Navigate } from 'react-router-dom';
 
 const Settings = () => {
   const auth = useAuth();
