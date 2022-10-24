@@ -10,7 +10,6 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const [loggingIn, setLoggingIn] = useState(false);
     const auth = useAuth();
-    console.log(auth);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -22,6 +21,7 @@ const Login = () => {
         }
 
         const response = await auth.login(email, password);
+
 
         if (response.success) {
             toast.success('Successfully Logged In');

@@ -1,5 +1,10 @@
 import { useContext, useEffect, useState } from 'react';
-import { login as userLogin, register, editProfile } from '../api';
+import {
+  login as userLogin,
+  register,
+  editProfile,
+  fetchUserFriends,
+} from '../api';
 import { AuthContext } from '../providers/AuthProvider';
 import {
   setItemInLocalStorage,
@@ -18,30 +23,49 @@ export const useProvideAuth = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const userToken = getItemFromLocalStorage(LOCALSTORAGE_TOKEN_KEY);
+    const getUser = async () => {
+      const userToken = getItemFromLocalStorage(LOCALSTORAGE_TOKEN_KEY);
 
-    if (userToken) {
-      const user = jwt(userToken);
-      setUser(user);
-    }
+      if (userToken) {
+        const user = jwt(userToken);
+        const response = await fetchUserFriends();
+        let friendships = [];
 
-    setLoading(false);
+        if (response.success) {
+          friendships = response.data.friends;
+        }
+
+        console.log(user);
+
+        setUser({
+          _id: user._id,
+          name: user.name,
+          email: user.email,
+          password: user.password,
+          friendships: friendships,
+         
+        });
+
+        console.log(user);
+      }
+
+      setLoading(false);
+    };
+
+    getUser();
   }, []);
 
-
-
   const updateUser = async (userId, name, password, confirmPassword) => {
-    
     const response = await editProfile(userId, name, password, confirmPassword);
 
     console.log('response: ', response);
 
     if (response.success) {
-        setUser(response.data.user);
-        setItemInLocalStorage(
+      setUser(response.data.user);
+      setItemInLocalStorage(
         LOCALSTORAGE_TOKEN_KEY,
         response.data.token ? response.data.token : null
-        );
+      );
       return {
         success: true,
       };
@@ -51,19 +75,30 @@ export const useProvideAuth = () => {
         message: response.message,
       };
     }
-  }
-
-
+  };
 
   const login = async (email, password) => {
     const response = await userLogin(email, password);
-
     if (response.success) {
       setUser(response.data.user);
       setItemInLocalStorage(
         LOCALSTORAGE_TOKEN_KEY,
         response.data.token ? response.data.token : null
       );
+
+      const user = jwt(response.data.token);
+      const FetchFriendsResponse = await fetchUserFriends();
+      let friendships = [];
+
+      if (FetchFriendsResponse.success) {
+        friendships = FetchFriendsResponse.data.friends;
+      }
+
+      setUser({
+        ...user,
+        friendships
+      });
+
       return {
         success: true,
       };
@@ -95,12 +130,23 @@ export const useProvideAuth = () => {
     removeItemFromLocalStorage(LOCALSTORAGE_TOKEN_KEY);
   };
 
+  const updateUserFriends = (addFriend, friend) => {
+    if (addFriend) {
+      setUser({
+        ...user,
+        friendships: [...user.friendships, friend],
+      });
+      return;
+    }
+  };
+
   return {
     user,
     login,
     logout,
     loading,
     signup,
-    updateUser, 
+    updateUser,
+    updateUserFriends,
   };
 };
