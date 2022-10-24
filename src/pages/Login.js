@@ -10,7 +10,7 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const [loggingIn, setLoggingIn] = useState(false);
     const auth = useAuth();
-    // console.log(auth);
+    console.log(auth);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
