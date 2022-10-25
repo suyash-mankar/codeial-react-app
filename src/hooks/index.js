@@ -28,14 +28,13 @@ export const useProvideAuth = () => {
 
       if (userToken) {
         const user = jwt(userToken);
-        const response = await fetchUserFriends();
+        const response = await
+         fetchUserFriends();
         let friendships = [];
 
         if (response.success) {
           friendships = response.data.friends;
         }
-
-        console.log(user);
 
         setUser({
           _id: user._id,
@@ -43,10 +42,7 @@ export const useProvideAuth = () => {
           email: user.email,
           password: user.password,
           friendships: friendships,
-         
         });
-
-        console.log(user);
       }
 
       setLoading(false);
@@ -96,7 +92,7 @@ export const useProvideAuth = () => {
 
       setUser({
         ...user,
-        friendships
+        friendships,
       });
 
       return {
@@ -138,6 +134,13 @@ export const useProvideAuth = () => {
       });
       return;
     }
+
+    const newFriends = user.friendships.filter((item) => item.to_user._id !== friend.to_user._id);
+    setUser({
+      ...user,
+      friendships: newFriends,
+    });
+    return;
   };
 
   return {

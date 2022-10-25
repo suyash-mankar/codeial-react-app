@@ -1,29 +1,22 @@
 import styles from '../styles/settings.module.css';
-import { useLocation, useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { addFriend, fetchUserProfile } from '../api';
+import { addFriend, fetchUserProfile, removeFriend } from '../api';
 import toast from 'react-hot-toast';
 import Loader from '../components/Loader';
 import { useAuth } from '../hooks';
 
 const UserProfile = () => {
-  // const location = useLocation();
-  // console.log(location);
-  // const {user =  {}} = location.state;
-  // if state is undefined then set the user as an empty object
-
   const [user, setUser] = useState({});
   const [loading, setLoading] = useState(true);
   const [requestInProgrss, setRequestInProgrss] = useState(false);
   const { userId } = useParams();
   const navigate = useNavigate();
   const auth = useAuth();
-  // console.log(auth);
 
   useEffect(() => {
     const getUser = async () => {
       const response = await fetchUserProfile(userId);
-      // console.log(response);
       if (response.success) {
         setUser(response.data.user);
       } else {
@@ -42,7 +35,6 @@ const UserProfile = () => {
   }
 
   const checkIfUserIsAFriend = () => {
-
     const friends = auth.user.friendships;
     const friendIds = friends.map((friend) => friend.to_user._id);
     // map will return an array of id's of user's friends -> friend.to_user._id
@@ -55,14 +47,31 @@ const UserProfile = () => {
     return false;
   };
 
-  const handleRemoveFriendClick = () => {};
+  const handleRemoveFriendClick = async () => {
+    setRequestInProgrss(true);
+    const response = await removeFriend(userId);
+
+    if (response.success) {
+      const friendship = auth.user.friendships.filter(
+        (friend) => friend.to_user._id === userId
+      ); 
+
+      auth.updateUserFriends(false, friendship[0]);
+      toast.success('Friend removed successfully');
+    } else {
+      toast.error(response.message);
+    }
+
+    setRequestInProgrss(false);
+  };
 
   const handleAddFriendClick = async () => {
     setRequestInProgrss(true);
 
     const response = await addFriend(userId);
+    const { friendship } = response.data;
+
     if (response.success) {
-      const { friendship } = response.data;
       auth.updateUserFriends(true, friendship);
       toast.success('Friend added successfully');
     } else {
@@ -71,7 +80,6 @@ const UserProfile = () => {
 
     setRequestInProgrss(false);
   };
-
 
   return (
     <div className={styles.settings}>
@@ -97,6 +105,7 @@ const UserProfile = () => {
           <button
             className={`button ${styles.saveBtn}`}
             onClick={handleRemoveFriendClick}
+            disabled={requestInProgrss}
           >
             {requestInProgrss ? 'Removing Friend...' : 'Remove Friend'}
           </button>
