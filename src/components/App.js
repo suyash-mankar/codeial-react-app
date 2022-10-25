@@ -39,8 +39,7 @@ function App() {
                 <Settings />
               </PrivateRoute>
             }
-          />
-
+          />  
           <Route
             path="/user/:userId"
             element={

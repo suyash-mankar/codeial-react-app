@@ -1,38 +1,22 @@
-import { useEffect, useState } from 'react';
 import styles from '../styles/home.module.css';
 import Comments from '../components/Comments';
-import { getPosts } from '../api';
 import { CreatePost, FriendsList, Loader } from '../components';
 import { Link } from 'react-router-dom';
-import { useAuth } from '../hooks';
+import { useAuth, usePosts } from '../hooks';
 
 const Home = () => {
-  const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
   const auth = useAuth();
+  const posts = usePosts();
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      const response = await getPosts();
-      if (response.success) {
-        setPosts(response.data.posts);
-      }
-      setLoading(false);
-    };
-
-    fetchPosts();
-  }, []);
-
-  if (loading) {
+  if (posts.loading) {
     return <Loader />;
   }
 
   return (
     <div className={styles.home}>
       <div className={styles.postsList}>
-      <CreatePost />
-
-        {posts.map((post) => (
+        <CreatePost />
+        {posts.data.map((post) => (
           <div className={styles.postWrapper} key={`post-${post._id}`}>
             <div className={styles.postHeader}>
               <div className={styles.postAvatar}>
@@ -58,7 +42,7 @@ const Home = () => {
                     src="https://cdn-icons-png.flaticon.com/512/889/889140.png"
                     alt="likes-icon"
                   />
-                  <span>5</span>
+                  <span>{post.likes.length}</span>
                 </div>
 
                 <div className={styles.postCommentsIcon}>
