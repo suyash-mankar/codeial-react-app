@@ -29,8 +29,7 @@ export const useProvideAuth = () => {
 
       if (userToken) {
         const user = jwt(userToken);
-        const response = await
-         fetchUserFriends();
+        const response = await fetchUserFriends();
         let friendships = [];
 
         if (response.success) {
@@ -136,7 +135,9 @@ export const useProvideAuth = () => {
       return;
     }
 
-    const newFriends = user.friendships.filter((item) => item.to_user._id !== friend.to_user._id);
+    const newFriends = user.friendships.filter(
+      (item) => item.to_user._id !== friend.to_user._id
+    );
     setUser({
       ...user,
       friendships: newFriends,
@@ -155,13 +156,9 @@ export const useProvideAuth = () => {
   };
 };
 
-
-
 export const usePosts = () => {
   return useContext(PostsContext);
 };
-
-
 
 export const useProvidePosts = () => {
   const [posts, setPosts] = useState(null);
@@ -179,17 +176,14 @@ export const useProvidePosts = () => {
     fetchPosts();
   }, []);
 
-
-  const addPostToState = () => {
-
-  }
-
+  const addPostToState = (post) => {
+    const newPosts = [post, ...posts];
+    setPosts(newPosts);
+  };
 
   return {
     data: posts,
     loading,
     addPostToState,
-  }
-
-}
-
+  };
+};
