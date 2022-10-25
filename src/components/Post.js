@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import Comment from './Comment';
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import styles from '../styles/home.module.css';
 import { useState } from 'react';
-import { createComment } from '../api';
+import { createComment, toggleLike } from '../api';
 import toast from 'react-hot-toast';
 import { usePosts } from '../hooks';
 
@@ -11,7 +11,7 @@ const Post = ({ post }) => {
   const [comment, setComment] = useState('');
   const [creatingComment, setCreatingComment] = useState(false);
   const posts = usePosts();
-
+  const navigate = useNavigate();
   const handleAddComment = async (e) => {
     if (e.key === 'Enter') {
       setCreatingComment(true);
@@ -28,6 +28,23 @@ const Post = ({ post }) => {
     }
 
     setCreatingComment(false);
+
+  };
+
+  const handlePostLikeClick = async () => {
+    const response = await toggleLike(post._id, 'Post');
+    if (response.success) {
+      if (response.data.deleted) {
+        toast.success('Like removed successfully');
+      } else {
+        toast.success('Like added successfully');
+      }
+    } else {
+      toast.error(response.error);
+    }
+
+    window.location.reload();
+
   };
 
   return (
@@ -52,10 +69,12 @@ const Post = ({ post }) => {
 
         <div className={styles.postActions}>
           <div className={styles.postLike}>
-            <img
-              src="https://cdn-icons-png.flaticon.com/512/889/889140.png"
-              alt="likes-icon"
-            />
+            <button onClick={handlePostLikeClick}>
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/889/889140.png"
+                alt="likes-icon"
+              />
+            </button>
             <span>{post.likes.length}</span>
           </div>
 
